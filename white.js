@@ -35,9 +35,9 @@ function loop() {
 
 	for(var a=0; a<numLEDs; a++) {
 		var r = a*3;
-		buf[r] = 0xFF;
-		buf[r+1] = 0xFF;
-		buf[r+2] = 0xFF;
+		buf[r] = 0x8F;
+		buf[r+1] = 0x8F;
+		buf[r+2] = 0x8F;
 	}
 
 	spi.write(buf,noop);

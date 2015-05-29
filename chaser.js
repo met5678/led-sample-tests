@@ -5,6 +5,7 @@ var Easing = require("easing");
 
 var spi = SPI.initialize("/dev/spidev0.0");
 spi.clockSpeed(1e6);
+//spi.bitOrder(SPI.order.LSB_FIRST);
 
 var numLEDs = 106;
 var channels = numLEDs*3;

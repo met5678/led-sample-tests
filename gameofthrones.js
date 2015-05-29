@@ -5,6 +5,8 @@ var Easing = require("easing");
 
 var spi = SPI.initialize("/dev/spidev0.0");
 spi.clockSpeed(1e6);
+//spi.dataMode(3);
+//spi.bitOrder(SPI.order.LSB_FIRST);
 
 var numLEDs = 106;
 var channels = numLEDs*3;
@@ -17,47 +19,30 @@ var composite = 840;
 var factors = [2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 15, 20, 21, 24, 28];
 var invFactors = [420, 280, 210, 168, 140, 120, 105, 84, 70, 60, 56, 42, 40, 35, 30];
 
-var hue = 150;
-var sat = 60;
-var value = 20;
-var spread = 360;
-var satSpread = 0;
+var hue = 20;
+var sat = 100;
+var value = 100;
+var spread = 40;
 var easeType = 'circular';
 
 var twoPi = Math.PI*2;
 
-// Max 14
-var slowestEasingIndex = 10;
-var fastestEasingIndex = 12;
+var numEasings = 2;
 var ledFrames = [];
 
-var onFraction = 1;
+var darkPercent = 0;
 
 var easingLib = [];
-for(var easingLibIndex=0, framesIndex = slowestEasingIndex; framesIndex <= fastestEasingIndex;easingLibIndex++,framesIndex++) {
-	var numFrames = invFactors[framesIndex];
-	var numOnFrames = Math.round(numFrames * onFraction);
-	var startingFrame = Math.floor((numFrames-numOnFrames)/2);
-	var onEasingFrames = Easing(numOnFrames,easeType,{endToEnd:true});
-	var easingFrames = [];
-	console.log(numFrames,numOnFrames,startingFrame,onEasingFrames.length);
-	for(var easingFrameIndex=0; easingFrameIndex<numFrames; easingFrameIndex++) {
-		if(easingFrameIndex < startingFrame)
-			easingFrames[easingFrameIndex] = 0;
-		else if(easingFrameIndex < numOnFrames + startingFrame)
-			easingFrames[easingFrameIndex] = onEasingFrames[easingFrameIndex-startingFrame];
-		else
-			easingFrames[easingFrameIndex] = 0;
+for(var easingLibIndex=0; easingLibIndex<numEasings;easingLibIndex++) {
+	var easingFrames = Easing(invFactors[easingLibIndex],easeType,{endToEnd:true});
+	for(var easingFrameIndex=0; easingFrameIndex<easingFrames.length; easingFrameIndex++) {
+		var rawFrame = easingFrames[easingFrameIndex] * (1+darkPercent) - darkPercent;
+		easingFrames[easingFrameIndex] = rawFrame < 0 ? 0 : rawFrame;
 	}
 	easingLib[easingLibIndex] = easingFrames;
 }
 
 var getSpreadColor = function() {
-	var thisSatSpread = satSpread*Math.pow(Math.random(),3);
-	var satValue = Math.round(100-thisSatSpread);
-	console.log(satValue);
-
-
 	var thisSpread = Math.random()*spread;
 	var hueValue = hue-(spread/2)+thisSpread;
 	if(hueValue < 0)
@@ -66,14 +51,14 @@ var getSpreadColor = function() {
 		hueValue -= 360;
 	return Color({
 		h:hueValue,
-		s:satValue,
+		s:sat,
 		v:value
 	})
 }
 
 for(var led=0; led<numLEDs; led++) {
 	var colorRGB = getSpreadColor().values.rgb;
-	var cycleFrames = easingLib[Math.floor(Math.random()*easingLib.length)];
+	var cycleFrames = easingLib[Math.floor(Math.random()*numEasings)];
 	var cycleFramesNum = cycleFrames.length;
 	var offsetNum = Math.floor(Math.random()*cycleFramesNum);
 
@@ -108,9 +93,6 @@ function loop() {
 		curFrame = 0;
 
 	spi.write(buf,noop);
-	//setImmediate(loop);
 }
 
-loop();
-// Minimum delay for these lights is 5
-setInterval(loop,33);
+setInterval(loop,15);
