@@ -3,7 +3,7 @@ var SPI = require("pi-spi");
 var Color = require("color");
 var Easing = require("easing");
 
-var spi = SPI.initialize("/dev/spidev0.1");
+var spi = SPI.initialize("/dev/spidev0.0");
 spi.clockSpeed(1e6);
 
 var numLEDs = 106;
@@ -17,10 +17,10 @@ var composite = 840;
 var factors = [2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 15, 20, 21, 24, 28];
 var invFactors = [420, 280, 210, 168, 140, 120, 105, 84, 70, 60, 56, 42, 40, 35, 30];
 
-var hue = 210;
+var hue = 0;
 var sat = 100;
 var value = 60;
-var spread = 160;
+var spread = 60;
 var easeType = 'circular';
 
 var twoPi = Math.PI*2;

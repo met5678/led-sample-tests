@@ -1,0 +1,24 @@
+{
+  "name": "led-sample-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bioluminescence.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/met5678/led-sample-tests.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/met5678/led-sample-tests/issues"
+  },
+  "homepage": "https://github.com/met5678/led-sample-tests#readme",
+  "dependencies": {
+    "color": "^0.10.1",
+    "easing": "0.0.4",
+    "pi-spi": "^1.0.1"
+  }
+}
