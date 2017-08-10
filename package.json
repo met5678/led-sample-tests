@@ -17,8 +17,8 @@
   },
   "homepage": "https://github.com/met5678/led-sample-tests#readme",
   "dependencies": {
-    "color": "^0.10.1",
+    "color": "~2.0.0",
     "easing": "0.0.4",
-    "pi-spi": "^1.0.1"
+    "pi-spi": "~1.0.2"
   }
 }
