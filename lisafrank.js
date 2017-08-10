@@ -13,22 +13,21 @@ const spread = 360;
 const satSpread = 0;
 const slowestEasingIndex = 2;
 const fastestEasingIndex = 5;
+const onFraction = 1;
+
 
 const channels = numLEDs*3;
+const twoPi = Math.PI*2;
 
 // Using [composite] as our frame number so that we can loop as many frames as is possible
 const composite = 840;
 const factors = [2, 3, 4, 5, 6, 7, 8, 10, 12, 14, 15, 20, 21, 24, 28];
 const invFactors = [420, 280, 210, 168, 140, 120, 105, 84, 70, 60, 56, 42, 40, 35, 30];
-
-var easeType = 'circular';
-
-var twoPi = Math.PI*2;
+const easeType = 'circular';
 
 // Max 14
-var ledFrames = [];
+const ledFrames = [];
 
-var onFraction = 1;
 
 var easingLib = [];
 for(var easingLibIndex=0, framesIndex = slowestEasingIndex; framesIndex <= fastestEasingIndex;easingLibIndex++,framesIndex++) {
@@ -49,7 +48,7 @@ for(var easingLibIndex=0, framesIndex = slowestEasingIndex; framesIndex <= faste
 	easingLib[easingLibIndex] = easingFrames;
 }
 
-var getSpreadColor = function() {
+const getSpreadColor = function() {
 	var thisSatSpread = satSpread*Math.pow(Math.random(),3);
 	var satValue = Math.round(100-thisSatSpread);
 	console.log(satValue);
@@ -105,7 +104,6 @@ function loop() {
 		curFrame = 0;
 
 	spi.write(buf,noop);
-	//setImmediate(loop);
 }
 
 loop();
