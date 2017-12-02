@@ -68,7 +68,7 @@ const getSpreadColor = function() {
 }
 
 for(var led=0; led<numLEDs; led++) {
-	var colorRGB = getSpreadColor().values.rgb;
+	var colorRGB = getSpreadColor().rgb().array();
 	var cycleFrames = easingLib[Math.floor(Math.random()*easingLib.length)];
 	var cycleFramesNum = cycleFrames.length;
 	var offsetNum = Math.floor(Math.random()*cycleFramesNum);
